@@ -33,14 +33,14 @@ public class CarteleraController {
         return ResponseEntity.ok(eventos);
     }
 
-    @GetMapping("/eventos{id}")
+    @GetMapping("/eventos/{id}")
     public ResponseEntity<Evento> obtenerEventoPorId(@PathVariable Long id){
         return eventoService.buscarEventoPorId(id)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/funcion{id}")
+    @GetMapping("/funcion/{id}")
     public ResponseEntity<Funcion> obtenerFuncionPorId(@PathVariable Long id){
         return funcionService.buscarFuncionPorId(id)
         .map(ResponseEntity::ok)
