@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Repository
 public interface FuncionRepository extends JpaRepository<Funcion, Long>{
 
-    List<Funcion> findByEventoId(Long eventoId);
+    List<Funcion> findByEvento_id(Long eventoId);
 
     List<Funcion> findByFechaHoraAfter(LocalDateTime fechaHora);
 }

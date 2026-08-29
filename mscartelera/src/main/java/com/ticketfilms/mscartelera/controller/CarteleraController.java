@@ -1,6 +1,7 @@
 package com.ticketfilms.mscartelera.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ticketfilms.mscartelera.model.Evento;
@@ -45,6 +46,12 @@ public class CarteleraController {
         return funcionService.buscarFuncionPorId(id)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/funciones")
+    public ResponseEntity<List<Funcion>> listarFuncionesPorEvento(@RequestParam Long eventoId){
+        List<Funcion> funciones = funcionService.listarFuncionesPorEventos(eventoId);
+        return ResponseEntity.ok(funciones);
     }
 
     @PostMapping("/eventos")

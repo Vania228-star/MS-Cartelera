@@ -18,7 +18,7 @@ public class FuncionService {
     private final FuncionRepository funcionRepository;
 
     public List<Funcion> listarFuncionesPorEventos(Long eventoid){
-        return funcionRepository.findByEventoId(eventoid);
+        return funcionRepository.findByEvento_id(eventoid);
     }
 
     public Optional<Funcion> buscarFuncionPorId(Long id){
