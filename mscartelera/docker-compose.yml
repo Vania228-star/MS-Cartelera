@@ -1,0 +1,11 @@
+services:
+  ms-cartelera:
+    build: .
+    container_name: ms-cartelera-container
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    restart: always
