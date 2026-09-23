@@ -8,4 +8,5 @@ services:
       - DB_URL=${DB_URL}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
+      - COGNITO_ISSUER_URI=${COGNITO_ISSUER_URI}
     restart: always
