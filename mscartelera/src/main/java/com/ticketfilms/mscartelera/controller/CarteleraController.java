@@ -1,5 +1,8 @@
 package com.ticketfilms.mscartelera.controller;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -35,6 +38,7 @@ public class CarteleraController {
     @GetMapping("/eventos/{id}")
     public ResponseEntity<Evento> obtenerEventoPorId(@PathVariable Long id) {
         return eventoService.buscarEventoPorId(id)
+                .map(this::conProximaFuncion)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -56,5 +60,19 @@ public class CarteleraController {
     public ResponseEntity<Evento> crearEvento(@RequestBody Evento evento) {
         Evento nuevoEvento = eventoService.guardarEvento(evento);
         return ResponseEntity.status(201).body(nuevoEvento);
+    }
+
+    // Busca la primera función futura del evento (hora de Chile, porque el
+    // servidor en EC2 corre en UTC) y copia su fecha y sala al evento.
+    private Evento conProximaFuncion(Evento evento) {
+        LocalDateTime ahora = LocalDateTime.now(ZoneId.of("America/Santiago"));
+        funcionService.listarFuncionesPorEventos(evento.getId()).stream()
+                .filter(f -> f.getFechaHora() != null && f.getFechaHora().isAfter(ahora))
+                .min(Comparator.comparing(Funcion::getFechaHora))
+                .ifPresent(f -> {
+                    evento.setProximaFuncion(f.getFechaHora());
+                    evento.setProximaSala(f.getSala());
+                });
+        return evento;
     }
 }
